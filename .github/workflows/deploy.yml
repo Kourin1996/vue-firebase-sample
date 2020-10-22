@@ -44,9 +44,11 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
-      - name: Install Dependencies
+      - name: Install Dependencies for functions
         run: npm install
         working-directory: ./functions
+      - name: Install Dependencies
+        run: npm install
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
