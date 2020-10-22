@@ -52,7 +52,7 @@ jobs:
               }
             ]
       - name: Send to Slack (If failed)
-        if: failed()
+        if: failure()
         uses: tokorom/action-slack-incoming-webhook@main
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
