@@ -5,8 +5,8 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build
+  build-vue:
+    name: Build Vue Application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -20,9 +20,9 @@ jobs:
         with:
           name: dist
           path: dist
-  deploy:
-    name: Deploy
-    needs: build
+  deploy-vue:
+    name: Deploy Vue Application
+    needs: build-vue
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -35,6 +35,19 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting,functions,firestore,storage
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+  deploy-firebase:
+    name: Deploy Firebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ./functions
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions,firestore,storage
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
